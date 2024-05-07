@@ -173,10 +173,10 @@
 
             <!-- app下载 -->
             <template v-if="isShelves">
-                <div v-if="itemName !== 'TikTok-Wholesale'">
-                    <div class="download_wrap" v-if="isApp">
-                        <div class="down_title">{{ '院校合作,优质资源' }}</div>
-                        <div class="sub_title">{{ '留学正当时/您未来无限' }}</div>
+                <div >
+                    <div class="download_wrap" >
+                        <!-- <div class="down_title">{{ '院校合作,优质资源' }}</div>
+                        <div class="sub_title">{{ '留学正当时/您未来无限' }}</div> -->
                     </div>
                 </div>
             </template>
@@ -934,7 +934,7 @@ export default {
             padding: 0 1px;
 
             .swipe-product-item {
-                width: calc(50% - 15px);
+                width: calc(100% - 15px);
                 height: 245px;
                 border: 1px solid rgba(238, 238, 238, 1);
                 margin-bottom: 10px;
@@ -1724,6 +1724,7 @@ export default {
 
 .download_wrap {
     width: 100%;
+    height: 115px;
     padding: 21px 17px 21px 17px;
     background: url(@/assets/image/index/downloadbg.png) no-repeat center / 100% 100%;
     box-sizing: border-box;
