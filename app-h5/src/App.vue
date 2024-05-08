@@ -48,7 +48,7 @@ export default {
 
 
         link.href = require(`@/assets/Argos/favicon.png`);
-        document.title = '飞立教育'
+        document.title = '心瀚教育'
         // 刷新事件
         window.addEventListener("beforeunload", () => {
             sessionStorage.removeItem("scrollTopCount")

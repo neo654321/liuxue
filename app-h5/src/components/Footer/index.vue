@@ -68,7 +68,7 @@ export default {
             dialogShow: false,
             type: '',
             // name: process.env.VUE_APP_ITEM_NAME,
-            name: '飞立教育',
+            name: '心瀚教育',
         
             paymentList: [
                 {
@@ -121,7 +121,7 @@ export default {
     computed: {
         introduce() {
     
-            const text = '飞立教育学留学服务有限公司（简称艾菲学留学）（Xiamen Effie Overseas Education Co., Ltd.）是一家集菲律宾留学、游学、中菲教育资源合作的菲律宾教育垂直服务企业。艾菲学留学以菲律宾本硕博留学为服务核心，为有志于读取菲律宾学士、硕士、博士的海内外学子提供菲律宾高等院校申请服务，为中国留学生顺利入读海外院校、获得学位提供各项保障'
+            const text = '心瀚教育学留学服务有限公司（简称艾菲学留学）（Xiamen Effie Overseas Education Co., Ltd.）是一家集菲律宾留学、游学、中菲教育资源合作的菲律宾教育垂直服务企业。艾菲学留学以菲律宾本硕博留学为服务核心，为有志于读取菲律宾学士、硕士、博士的海内外学子提供菲律宾高等院校申请服务，为中国留学生顺利入读海外院校、获得学位提供各项保障'
     
             return text;
             // return `${name} ${this.$t(text)} `

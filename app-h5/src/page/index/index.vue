@@ -1,7 +1,7 @@
 <template>
     <div ref="scroll" style="min-height: 100vh;">
         <div class="home">
-            <van-nav-bar   title="飞立教育" safe-area-inset-top fixed @click-left="onClickLeft" @click-right="onClickRight">
+            <van-nav-bar   title="心瀚教育" safe-area-inset-top fixed @click-left="onClickLeft" @click-right="onClickRight">
                 <div slot="left" class="logo-wrap">
                     <img :class="['logo-img', isAr && 'top_logo_img']" :src="logo"
                         :style="itemData.logoHeight && { height: itemData.logoHeight + 'px' }" />
@@ -259,7 +259,7 @@ import {
 
 // import { Skeleton } from "vant";
 import { priceFormat, priceFormatInt, isLogin } from "@/utils/utis";
-
+import jsonData from '@/assets/data/topList.json'
 export default {
     name: "HomePage",
     components: {
@@ -280,7 +280,9 @@ export default {
         [Icon.name]: Icon,
     },
     created() {
-        this.init();
+     this.init();
+
+
 
     
   
@@ -459,36 +461,62 @@ export default {
             /**
              * type 0:每日新品 1:推荐产品 2:热销产品
              */
-            if (localStorage.getItem("index_recomendedStoreProductList")) {
-                this.recomendedStoreProductList = JSON.parse(localStorage.getItem("index_recomendedStoreProductList"));
-                this.loading.product = false;
-            }
-            if (localStorage.getItem("index_dailyNewArrivalList")) {
-                this.dailyNewArrivalList = JSON.parse(localStorage.getItem("index_dailyNewArrivalList"));
-                this.loading.newest = false;
-            }
-            if (localStorage.getItem("index_productList")) {
-                this.productList = JSON.parse(localStorage.getItem("index_productList"));
+            // if (localStorage.getItem("index_recomendedStoreProductList")) {
+            //     this.recomendedStoreProductList = JSON.parse(localStorage.getItem("index_recomendedStoreProductList"));
+            //     this.loading.product = false;
+            // }
+            // if (localStorage.getItem("index_dailyNewArrivalList")) {
+            //     this.dailyNewArrivalList = JSON.parse(localStorage.getItem("index_dailyNewArrivalList"));
+            //     this.loading.newest = false;
+            // }
+            // if (localStorage.getItem("index_productList")) {
+            //     this.productList = JSON.parse(localStorage.getItem("index_productList"));
+            //     this.prodctPage = Math.ceil(this.productList.length / 4);
+            //     this.loading.product = false;
+            // }
+            // const [recommendRes, dailyNewArrivalRes, recomendedStoreProductRes] = await Promise.all([
+            //     apiGetNewGoods({ pageNum: 1, pageSize: 24, type: 1 }),
+            //     apiGetNewGoods({ pageNum: 1, pageSize: 24, type: 0 }),
+            //     apiGetNewGoods({ pageNum: 1, pageSize: 24, type: 2 })
+            // ]);
+
+            // this.productList = recommendRes.result;
+            // this.prodctPage = Math.ceil(this.productList.length / 4);
+            // this.loading.product = false;
+
+            // this.dailyNewArrivalList = [...dailyNewArrivalRes.result, ...dailyNewArrivalRes.result];
+            // this.loading.newest = false;
+
+            // this.recomendedStoreProductList = recomendedStoreProductRes.result;
+            // localStorage.setItem("index_productList", JSON.stringify(this.productList));
+            // localStorage.setItem("index_dailyNewArrivalList", JSON.stringify(this.dailyNewArrivalList));
+            // localStorage.setItem("index_recomendedStoreProductList", JSON.stringify(this.recomendedStoreProductList));
+
+            console.log(44444);
+
+     
+                // console.log(response.dat);
+                this.productList = jsonData;
                 this.prodctPage = Math.ceil(this.productList.length / 4);
                 this.loading.product = false;
-            }
-            const [recommendRes, dailyNewArrivalRes, recomendedStoreProductRes] = await Promise.all([
-                apiGetNewGoods({ pageNum: 1, pageSize: 24, type: 1 }),
-                apiGetNewGoods({ pageNum: 1, pageSize: 24, type: 0 }),
-                apiGetNewGoods({ pageNum: 1, pageSize: 24, type: 2 })
-            ]);
+                this.loading.newest = false;
 
-            this.productList = recommendRes.result;
-            this.prodctPage = Math.ceil(this.productList.length / 4);
-            this.loading.product = false;
+            // axios.get('@/assets/data/topList.json')
+            // .then(response => {
+            //     console.log(2222222);
+            //     console.log(response.dat);
+            //     this.productList = response.data;
+            //     this.prodctPage = Math.ceil(this.productList.length / 4);
+            //     this.loading.product = false;
+            //     this.loading.newest = false;
+            // })
+            // .catch(error => {
+            //     console.error('Error loading JSON:', error)
+            // })
 
-            this.dailyNewArrivalList = [...dailyNewArrivalRes.result, ...dailyNewArrivalRes.result];
-            this.loading.newest = false;
 
-            this.recomendedStoreProductList = recomendedStoreProductRes.result;
-            localStorage.setItem("index_productList", JSON.stringify(this.productList));
-            localStorage.setItem("index_dailyNewArrivalList", JSON.stringify(this.dailyNewArrivalList));
-            localStorage.setItem("index_recomendedStoreProductList", JSON.stringify(this.recomendedStoreProductList));
+
+
         },
         async requestHomeCategory() {
             if (localStorage.getItem("index_categoryList")) {
@@ -589,32 +617,41 @@ export default {
                 this.loading.shop = false
                 localStorage.setItem("index_recomendedStoreShopList", JSON.stringify(this.recomendedStoreShopList));
             });
+
+
+
+
+
+
+
         },
         home_sellerGoods() {
-            let data1 = {
-                recTime: Date.now(),
-            };
-            home_sellerGoods(data1).then((res) => {
-                //推荐产品
-                this.productList = res.pageList
-                this.loading.product = false
+            // let data1 = {
+            //     recTime: Date.now(),
+            // };
+            // home_sellerGoods(data1).then((res) => {
+            //     //推荐产品
+            //     this.productList = res.pageList
+            //     this.loading.product = false
 
-                this.prodctPage =
-                    this.productList.length > 0 &&
-                    Math.ceil(this.productList.length / 4);
-            });
-            let data2 = {
-                newTime: Date.now(),
-            };
-            home_sellerGoods(data2).then((res) => {
-                //新品推荐
-                this.dailyNewArrivalList = res.pageList;
-                this.loading.newest = false
-            });
-            home_sellerGoods({}).then((res) => {
-                //商品底部
-                this.recomendedStoreProductList = res.pageList;
-            });
+            //     this.prodctPage =
+            //         this.productList.length > 0 &&
+            //         Math.ceil(this.productList.length / 4);
+            // });
+            // let data2 = {
+            //     newTime: Date.now(),
+            // };
+            // home_sellerGoods(data2).then((res) => {
+            //     //新品推荐
+            //     this.dailyNewArrivalList = res.pageList;
+            //     this.loading.newest = false
+            // });
+            // home_sellerGoods({}).then((res) => {
+            //     //商品底部
+            //     this.recomendedStoreProductList = res.pageList;
+            // });
+
+
         },
 
         touzi2() {
@@ -932,7 +969,6 @@ export default {
             flex-wrap: wrap;
             justify-content: space-between;
             padding: 0 1px;
-
             .swipe-product-item {
                 width: calc(100% - 15px);
                 height: 245px;
