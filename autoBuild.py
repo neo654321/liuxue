@@ -37,9 +37,7 @@ if __name__ == "__main__":
     android_res = './android/app/src/main/res'
 
     # 接口域名    
-    apiList = [
-                'slotswin999.com'
-               ]
+    apiList = ['slotswin999.com']
 
 
     # 源文件的路径
@@ -89,18 +87,58 @@ if __name__ == "__main__":
     read_file('./android/app/src/main/res/values/styles.xml', '</resources>',values_styles)
 
 
+    launch_background_xml = f'android/app/src/main/res/drawable-v21/launch_background_{targe}.xml'
+    
+# <?xml version="1.0" encoding="utf-8"?>
+# <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+#     <item>
+#         <bitmap android:gravity="fill" android:src="@drawable/background_b70"/>
+#     </item>
+# </layer-list>
+
+
+
+    xml_1 = values_styles = f'<?xml version="1.0" encoding="utf-8"?>\n'
+    xml_2 = values_styles = f'<layer-list xmlns:android="http://schemas.android.com/apk/res/android">\n'
+    xml_3 = values_styles = f'\t<item>\n'
+    xml_4 = values_styles = f'\t\t <bitmap android:gravity="fill" android:src="@drawable/background_{targe}"/>\n'
+    xml_5 = values_styles = f'\t</item>\n'
+    xml_6 = values_styles = f'</layer-list>'
+
+    xml = xml_1+xml_2+xml_3+xml_4+xml_5+xml_6
+    # 文件不存在 创建文件,如果存在 先清空文件内容
+    with open(launch_background_xml, 'w') as file:
+        file.write(xml)
+        print("File created and content written.")
+
+
    
 
+    configMap = f'\t\t\'{targe}\':{targe},\n'
+    read_file('./lib/env.dart', 'ConfigMap-end-targe',configMap)
+
+
+    configMap = f'\tstatic List<String> {targe}_l ={apiList};'
+    read_file('./lib/env.dart', 'api_list_targe',configMap)
 
 
 
 
+#   static final EnvConfig b67 = EnvConfig(
+#     "prod",
+#     apiUrl: "https://mkkwin.com",
+#     wsUrl:"a5175cad3a67d45c9ab0597382790365-1212270961.sa-east-1.elb.amazonaws.com",
+#     port: '1883',
+#     imgBaseUrl: "https://dl-br.sadslj88.com",
+#   );
 
+    EnvConfig_1 = values_styles = f'static final EnvConfig {targe} = EnvConfig(\n'
+    EnvConfig_2 = values_styles = f'\t"prod",\n'
+    EnvConfig_3 = values_styles = f'\tapiUrl: "{apiList[0]}"\n'
+    EnvConfig_4 = values_styles = f'\t wsUrl:"a5175cad3a67d45c9ab0597382790365-1212270961.sa-east-1.elb.amazonaws.com",\n'
+    EnvConfig_5 = values_styles = f'\tport: \'1883\',\n'
+    EnvConfig_6 = values_styles = f'\timgBaseUrl: "https://dl-br.sadslj88.com",\n'
+    EnvConfig_7 = values_styles = f');'
 
-
-
-
-
-
-
-  
+    EnvConfig = EnvConfig_1+EnvConfig_2+EnvConfig_3+EnvConfig_4+EnvConfig_5+EnvConfig_6+EnvConfig_7
+    read_file('./lib/env.dart', 'EnvConfig-end',EnvConfig)
