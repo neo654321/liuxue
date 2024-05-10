@@ -91,13 +91,18 @@
             <div class="banner-product">
                 <van-skeleton :row="4" class="product_skeleton skeleton" :loading="loading.product">
                     <van-swipe @change="handleChangeSwiper">
-                        <van-swipe-item v-for="page in prodctPage" :key="page">
+                        <van-swipe-item v-for=" page  in prodctPage" :key="page">
                             <div class="swipe-product">
                                 <div class="swipe-product-item" style="background: #fff" v-for="item in productList.filter(
                                     (it, n) => (page - 1) * 4 <= n && n < page * 4
                                 )" @click="openProduct(item)" :key="item.id">
                                     <div class="img-div">
-                                        <img :src="item.imgUrl1 || $defaultGoodsImage" class="img" />
+                                        <img :src="item.imgUrl1" class="img" />
+
+                                        <!-- <img  :src={item.imgUrl1} alt="Dynamic Image" /> -->
+                                        <!-- @/assets/imgStu/1.png' -->
+                                        <!-- <img class="img"  :src="require(`/assets/imgStu/1.png`)" alt="Dynamic Image"> -->
+                                        <!-- <img :src="require(`${item.imgUrl}`)" alt="Dynamic Image"> -->
                                     </div>
                                     <div class="content">
                                         <span class="price">
@@ -391,38 +396,38 @@ export default {
     },
     methods: {
 
-      getShopImage(item) {
+    //   getShopImage(item) {
 
-        switch (item.mallLevel) {
-          case "A":
-            return require('@/assets/level/a.png')
+    //     switch (item.mallLevel) {
+    //       case "A":
+    //         return require('@/assets/level/a.png')
 
-            break;
-          case "B":
-            return require('@/assets/level/b.png')
-            break;
-          case "C":
-            return require('@/assets/level/c.png')
-            break
-          case "S":
-            return require('@/assets/level/s.png')
-            break;
-          case "O":
-            return require('@/assets/level/s.png')
-            break;
-          case "SS":
-            return require('@/assets/level/s.png')
-            break;
-          case "SSS":
-            return require('@/assets/level/s.png')
-            break;
-          default:
-            return require('@/assets/level/a.png')
-            break;
+    //         break;
+    //       case "B":
+    //         return require('@/assets/level/b.png')
+    //         break;
+    //       case "C":
+    //         return require('@/assets/level/c.png')
+    //         break
+    //       case "S":
+    //         return require('@/assets/level/s.png')
+    //         break;
+    //       case "O":
+    //         return require('@/assets/level/s.png')
+    //         break;
+    //       case "SS":
+    //         return require('@/assets/level/s.png')
+    //         break;
+    //       case "SSS":
+    //         return require('@/assets/level/s.png')
+    //         break;
+    //       default:
+    //         return require('@/assets/level/a.png')
+    //         break;
 
-        }
+    //     }
 
-      },
+    //   },
         information() {
             if (!isLogin()) {
                 // Dialog.confirm({
@@ -444,7 +449,7 @@ export default {
             this.requestBanner();//获取 banner
             this.requireRecommendNew()
             // 查询未读消息
-            this.getMessageNum();
+            // this.getMessageNum();
 
             this.requestHomeCategory();
             // this.home_sellerGoods();
@@ -492,11 +497,16 @@ export default {
             // localStorage.setItem("index_dailyNewArrivalList", JSON.stringify(this.dailyNewArrivalList));
             // localStorage.setItem("index_recomendedStoreProductList", JSON.stringify(this.recomendedStoreProductList));
 
-            console.log(44444);
-
-     
-                // console.log(response.dat);
+       
                 this.productList = jsonData;
+
+                 for (var i = 0; i < jsonData.length; i++) {
+              
+                    jsonData[i].imgUrl1 =   require(`@/assets/imgStu/${i + 1}.png`);
+                    
+                }
+                
+           
                 this.prodctPage = Math.ceil(this.productList.length / 4);
                 this.loading.product = false;
                 this.loading.newest = false;
