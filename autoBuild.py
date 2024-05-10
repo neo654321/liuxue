@@ -5,68 +5,6 @@ import time
 import sys
 import shutil
 
-# pip3 install python-telegram-bot
-
-# s3ossconfig = {
-#     "access_key_id" : 'AKIAXYKJWFYIXRSNOWU6',
-#     "access_key_secret" : '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',
-#     "bucket_name" : 'prod-app2',
-#     "region_name":'ap-east-1',
-# }
-
-# access_key_id = s3ossconfig['access_key_id']
-# access_key_secret = s3ossconfig['access_key_secret']
-# bucket_name = s3ossconfig['bucket_name']
-# region_name = s3ossconfig['region_name']
-class MyFileControl:
-    def __init__(self, name):
-        self.name = name
-
-    # # 按行读取文件，从底部往上读取
-    # def read_file_reverse(filename):
-    #     with open(filename, 'r') as file:
-    #         # 将文件内容读取为列表，每个元素是文件的一行
-    #         lines = file.readlines()
-            
-    #         # 倒序遍历列表，以实现逆序读取每行
-    #         for line in reversed(lines):
-    #             # 移除每行末尾的换行符并打印
-    #             print(line.rstrip())
-
-    # def read_file_reverse(filename):
-    # # 以读取模式打开文件
-    #     with open(filename, 'r') as file:
-    #         # 将文件内容读取为列表，每个元素是文件的一行
-    #         lines = file.readlines()
-
-    #         # 倒序遍历列表，以实现逆序读取每行
-    #         for line in reversed(lines):
-    #             # 移除每行末尾的换行符并打印
-    #             print(line.rstrip())    
-
-    def test():
-        # 以读取模式打开文件
-            print("他发地方")  
-class MyClass:
-    # def __init__(self, name):
-    #     self.name = name
-
-    # def greet(self):
-    #     print(f"Hello, {self.name}!")
-
-
-    def read_file(path):
-    # 以读取模式打开文件
-        with open(path, 'r') as file:
-            # 将文件内容读取为列表，每个元素是文件的一行
-            lines = file.readlines()
-
-            # 倒序遍历列表，以实现逆序读取每行
-            for line in reversed(lines):
-                # 移除每行末尾的换行符并打印
-                print(line.rstrip())        
-
-
 
 
 
