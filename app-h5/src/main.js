@@ -3,9 +3,7 @@ import store from './store';
 import App from './App.vue'
 import { i18n, vantLocales } from './i18n'
 import '@/assets/remNew.js'
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getMessaging, getToken } from "firebase/messaging";
+
 import router from '@/router/router'
 import { Lazyload } from 'vant';
 import { Button, Row, Col, NavBar, Search, Step, Steps, Notify, Image as VanImage } from 'vant'

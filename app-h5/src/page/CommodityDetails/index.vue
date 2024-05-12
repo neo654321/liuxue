@@ -2,7 +2,6 @@
     <div class="CommodityDetails">
         <van-nav-bar safe-area-inset-top fixed :title="$t('详情')" left-arrow @click-left="onClickLeft">
             <div slot="title" class="tab-wrap">
-  
          
             </div>
         </van-nav-bar>
@@ -10,7 +9,7 @@
         <div class="banner-product">
             <van-swipe @change="handleChangeSwiper" :autoplay="swiperWaitTime" ref="swiperRef" style="direction: ltr;">
                 <van-swipe-item class="swipe-item" v-for="(item, index) in imageList" :key="index">
-                    <img :src="item" @click="ImagePreview({ images: imageList, startPosition: index })" class="img" />
+                    <img :src="item" style="width: 100% ;height: auto;border-radius: 3px 3px 0 0;" />
                 </van-swipe-item>
                 <template #indicator>
                     <ul class="indicators indicator">
@@ -20,90 +19,24 @@
                 </template>
             </van-swipe>
         </div>
+
+        <div style="margin-top: 0px;"  class="markdown-container">
+            <vue-markdown v-if="markdownContent">
+                 {{ markdownContent }}
+            </vue-markdown>
+
+        </div>
+
+
+ 
+
         <div class="product-info-wrap">
-            <div class="product-name">
-                {{ goods_info.name }}
-            </div>
-            <div class="price-box">
-                <div class="product-price">
-                    <span class="title">{{ $t("单价") }}</span>
-                    <span class="money">${{
-                        priceFormat(goods_info.discountPrice)
-                        ? priceFormat(goods_info.discountPrice)
-                        : priceFormat(goods_info.sellingPrice)
-                    }}</span>
-                    <!-- <span class="text">{{$t('价格')}}&nbsp;$56.12</span> -->
-                </div>
-                <div class="product-sellingPrice" v-if="originalPrice">
-                    <span class="title">{{ $t("原价") }}</span>
-                    <span class="money">${{ priceFormat(originalPrice) }}</span>
-                </div>
-                <div class="product-sold">
-                    {{ $t("销量") }} {{ priceFormatInt(goods_info.soldNum) }}
-                </div>
-            </div>
-            <div class="sku_box" v-if="goods_info?.canSelectAttributes?.goodAttrs.length">
-                <div class="attributes_box">
-                    <div class="attributes" v-for="(item, i) of goods_info?.canSelectAttributes?.goodAttrs" :key="i">
-                        <div class="p_title" v-if="item?.attrName">{{ currentSkuTitle[i] }}</div>
-                        <ul v-if="item?.attrName">
-                            <li :class="[sub.attrValueId == activeAttrs[i] && 'active', sub?.icon && 'img_box', sub.disabled && 'disabled']"
-                                @click="handleToggle(sub, i, sub.disabled)" v-for="(sub, j) of item.attrValues" :key="j">
-                                <img v-if="sub?.icon" :src="sub.iconImg" alt="">
-                                <span v-else>{{ sub.attrValueName }}</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <!-- <div class="product-norm">
-                
-            </div> -->
-            <div class="product-line-item">
-                <div class="left">{{ $t("发货") }}</div>
-                <div class="right">
-                    {{
-                        $t(
-                            "商品下单后，24小时内发货。如下单存在物流管控，订单可能被延时发货，请留意订单物流信息或联系客服"
-                        )
-                    }}
-                </div>
-            </div>
-            <div class="product-line-item">
-                <div class="left">{{ $t("运费") }}</div>
-                <div class="right" @click="isShippingShow = true">
-                    {{
-                        goods_info.freightAmount == 0
-                        ? $t("免运费")
-                        : `$${goods_info.freightAmount ? priceFormat(goods_info.freightAmount) : "0.00"}`
-                    }}
-                    <div class="right-icon image_reversed"></div>
-                </div>
-            </div>
-            <div class="product-line-item">
-                <div class="left">{{ $t("税费") }}</div>
-                <div class="right" @click="isShippingShow = true">
-                    ${{ goods_info.goodsTax ? priceFormat(goods_info.goodsTax) : "0.00" }}
-                </div>
-            </div>
-            <div id="Evaluation"></div>
-            <div class="product-line-item">
-                <div class="left">{{ $t("已选数量") }}</div>
-                <div class="right">
-                    <van-stepper :disable-input="true" :max="maxBuyNum" integer v-model="bugNum" />
-                </div>
-            </div>
+   
+    
         </div>
         <div class="Evaluation">
-            <!-- <router-link to="/allReviews"> -->
-            <div class="nav-item" @click="jumpAllReviews">
-                <div class="left" v-if="itemName != 'Inchoi'">{{ $t("用户评价") }}({{ evaluationNum > 99 ? '99+' : evaluationNum
-                }})</div>
-                <div class="left" v-else>{{ $t("用户评价") }}</div>
-                <div class="right">
-                    <div class="right-icon image_reversed"></div>
-                </div>
-            </div>
+       
+<!-- 
             <div class="sort">
                 <span :class="[isEn && 'en_span', sort_index === -2 && 'active']" @click="sort_index = -2">{{
                     $t('有图')
@@ -119,27 +52,16 @@
                 <span :class="[isEn && 'en_span', sort_index === 3 && 'active']" @click="sort_index = 3">{{ $t('差评') }}
                     ({{ negativeComment > 99 ? '99+' : negativeComment }})
                 </span>
-            </div>
+            </div> -->
             <div class="reviews-list">
                 <div v-for="(item, index) in EvaluationInfo" :key="index" class="sheet-item">
                     <div class="top">
                         <img :src="require(`@/assets/image/avatar/${item.avatar}.png`)" class="img" />
                         <div class="name-title">
                             {{ item.userName }}
-                            <!-- {{
-                                item.userName.indexOf('@') > -1 ?
-                                item.userName.replace(/(.{2}).*(@.*)/, "$1***$2") :
-                                item.userName.indexOf(')') > -1 ?
-                                item.userName.replace(/(\(\+\d{2}\))(\d{2})(.*)(\d{4})/, "$1$2***$4") :
-                                item.userName.replace(/(.{2}).*(.{2}@.*)/, "$1***$2")
-                            }} -->
+     
                         </div>
-                        <!-- <div style="flex-grow: 1">
-                            
-                            <p class="date">
-                                {{ item.createTimeStr ? item.createTimeStr : item.createTime }}
-                            </p>
-                        </div> -->
+
                     </div>
                     <div class="mid">
                         <van-rate class="rate-wrap" v-model="item.rating" allow-half :size="15" :color="mainColor"
@@ -159,116 +81,12 @@
                 <van-empty v-if="EvaluationInfo.length == 0" :description="$t('暂无数据')" />
             </div>
 
-            <div class="centent">
-                {{ EvaluationInfo.content }}
-            </div>
+    
         </div>
-        <div class="details-wrap">
-            <div class="shop-wrap">
-                <div class="shop-info">
-                    <div class="left">
-                        <div class="shop-logo">
-                            <img :src="SellerInfo.avatar" />
-                        </div>
-                      <div class="shop-logo" style="margin-left: 5px">
-                        <img
-                            style="width: 25px;height: 25px"
-                            :src="this.getShopImage()"
-                            alt=""
-                            fit="fill"
-                        />
-                      </div>
-
-                        <div class="info">
-                            <div class="name">
-                                {{
-                                    SellerInfo.name?.length > 27
-                                    ? SellerInfo.name.slice(0, 27) + "..."
-                                    : SellerInfo.name
-                                }}
-                            </div>
-
-
-                            <div class="title">
-                                {{ $t("好评率") }}: {{ Math.floor(SellerInfo.highOpinion * 100) || 100 }}%
-                            </div>
-                        </div>
-                    </div>
-                    <div class="right" @click="jumpShop">
-                        {{ $t("访问商店") }}
-                    </div>
-                </div>
-
-                <div class="shop-bottom">
-                    <div class="item">
-                        <div class="text">
-                            {{ goods_info.seller ? goods_info.seller.sellerGoodsNum : 100 }}
-                        </div>
-                        <div class="title">{{ $t("所有产品") }}</div>
-                    </div>
-                    <div class="item">
-                        <div class="text">
-                            {{ (+goods_info.seller?.fake || 0) + (+goods_info.seller?.focusNum || 0) }}
-                        </div>
-                        <div class="title">{{ $t("关注") }}</div>
-                    </div>
-                    <div class="item">
-                        <div class="text">
-                            {{ (+goods_info.seller?.soldNum || 0) }}
-                        </div>
-                        <div class="title">{{ $t("销售量") }}</div>
-                    </div>
-                </div>
-            </div>
-            <!-- 推荐商品 -->
-            <div class="recommended_product" v-if="recommendedGoods?.length">
-                <div class="rd_title">{{ $t('推荐商品') }}</div>
-                <ul>
-                    <li v-for="(item, index) of recommendedGoods" :key="index" @click="getSellerGoodsInfo(item.id)">
-                        <div class="img">
-                            <img :src="item.imgUrl1 || $defaultGoodsImage" alt="">
-                        </div>
-                        <div class="rd_right">
-                            <span class="nowrap2">{{ $textOmit(item.name, 26) }}</span>
-                            <span>${{ priceFormat(item?.discountPrice || item.sellingPrice) }}</span>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="shop-description-title" id="details">
-                {{ $t("产品描述") }}
-            </div>
-            <div class="shop-description-text" @click="isshow = true" v-html="goods_info.des"></div>
-            <div class="details-centent" v-html="goods_info.imgDes"></div>
-            <van-empty v-if="!goods_info.des && !goods_info.imgDes" :description="$t('暂无数据')" />
-            <!-- 猜你喜欢 -->
-            <div class="may_like" v-if="likeGoods?.length">
-                <div class="ml_title">{{ $t('猜你喜欢') }}</div>
-                <div class="ml_list">
-                    <div v-for="(item, index) in likeGoods" class="list-item commodity" @click="getSellerGoodsInfo(item.id)"
-                        :key="index">
-                        <div class="commodity-img">
-                            <img :src="item.imgUrl1 || $defaultGoodsImage" alt="" />
-                        </div>
-                        <div class="money padd-15">
-                            ${{ priceFormat(item.discountPrice || item.sellingPrice) }}
-                        </div>
-                        <div class="text padd-15">
-                            {{ $t("销量") }} {{ priceFormatInt(item.soldNum) }}
-                        </div>
-                        <div class="titlename padd-15 nowrap2">{{ $textOmit(item.name) }}</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    
         <div class="buy-bottom-fiexd">
             <div class="fiexd-left">
-                <div class="item" @click="addKeepGoods">
-                    <div class="icon" :class="[
-                        goods_info.isKeep == 1 ? 'collect-check-icon' : 'collect-icon',
-                    ]"></div>
-                    <div class="text">{{ $t(collectTitle) }}</div>
-                </div>
+       
                 <div class="item" @click="openCustomer()">
                     <div class="icon kefu-icon"></div>
                     <div class="text">{{ itemName == 'FamilyMart' ? $t("联系商家") : $t("客服") }}</div>
@@ -291,114 +109,11 @@
                 <p>{{ $t("立即购买") }}</p>
             </div>
         </div>
-        <van-popup closeable v-model="isShippingShow" position="bottom" :style="{ height: '35%' }">
-            <div class="pop-header-title">
-                {{ $t("运费说明") }}
-            </div>
-            <div class="centent-wrap">
-                <p>
-                    {{ $t("1、跨境商品运费构成：运费=派送费+长途运费+送货费;") }}
-                </p>
-                <p>
-                    {{ $t("2、如不满足包邮条件，按实际收取运费产品") }}
-                </p>
-                <p>
-                    {{ $t("3、最终解释权归平台所有；") }}
-                </p>
-            </div>
-        </van-popup>
-        <transition name="fade">
-            <!-- <img class="dingbu" v-show=" isShowTopBtn " @click=" toTop(0) " src="@/assets/image/commodity/dingbu.png" /> -->
-            <van-icon v-show="isShowTopBtn" @click="toTop(0)" class="to_top" class-prefix="icon" name="huidaodingbu" />
-        </transition>
-        <van-popup v-model="cardShow" round position="bottom" :style="{ height: '40%' }" closeable>
-            <div class="title">
-                {{ $t("添加购物车") }}
-            </div>
-            <div class="card-wrap">
-                <div class="left">
-                    <div class="img">
-                        <img :src="imageList[0]" />
-                    </div>
-                    <div class="goods_info">
-                        <div class="name">
-                            {{
-                                goods_info.name?.length > 27
-                                ? goods_info.name.slice(0, 27) + "..."
-                                : goods_info.name
-                            }}
-                        </div>
 
-                        <div class="money">
-                            ${{ priceFormat(goods_info.discountPrice) || priceFormat(goods_info.sellingPrice) }}
-                        </div>
-                    </div>
-                </div>
-                <div class="right">
-                    <van-stepper :disable-input="true" :max="maxBuyNum" integer v-model="bugNum" />
-                </div>
-            </div>
-            <div class="card-but">
-                <van-button type="primary" class="but" block @click="addCart">{{
-                    $t("确定")
-                }}</van-button>
-            </div>
-        </van-popup>
-        <!-- 产品属性 -->
-        <van-popup v-model="productPropertiesShow" position="bottom" closeable round class="product_properties">
-            <div class="cart_title" v-if="isCard">
-                {{ $t("添加购物车") }}
-            </div>
-            <div class="p_top">
-                <div class="img">
-                    <img :src="currentCoverImg || goods_info.imgUrl1 || $defaultGoodsImage"
-                        @click=" ImagePreview([currentCoverImg || goods_info.imgUrl1])" alt="" />
-                </div>
-                <div class="t_right">
-                    <span class="price">${{
-                        priceFormat($operation(goods_info.discountPrice, bugNum, 'times')) ||
-                        priceFormat($operation(goods_info.sellingPrice, bugNum, 'times'))
-                    }}</span>
+        
 
-                    <div class="num_box">
-                        <div>
-                            <!-- <p></p> -->
-                            {{ $t("已选") }}:
-                            <span v-for=" item  of  currentSkuTitle " :key="item">
-                                {{ item }}
-                            </span>
-                        </div>
-                        <span>{{ $t("数量") }}: ×{{ bugNum }}</span>
-                    </div>
-                </div>
-            </div>
-            <div class="attributes_box">
-                <div class="attributes" v-for="( item, i ) of  goods_info?.canSelectAttributes?.goodAttrs " :key="i">
-                    <div class="p_title" v-if="item?.attrName">{{ currentSkuTitle[i] }}</div>
-                    <ul v-if="item?.attrName">
-                        <li :class="[sub.attrValueId == activeAttrs[i] && 'active', sub?.icon && 'img_box', sub.disabled && 'disabled']"
-                            @click=" handleToggle(sub, i, sub.disabled)" v-for="( sub, j ) of  item.attrValues " :key="j">
-                            <img v-if="sub?.icon" :src="sub.iconImg" alt="">
-                            <span v-else>{{ sub.attrValueName }}</span>
-                        </li>
-                    </ul>
-                </div>
-                <div class="count_box">
-                    <span>{{ $t("数量") }}:</span>
-                    <van-stepper :disable-input="true" :max="maxBuyNum" integer v-model="bugNum" />
-                </div>
-            </div>
-
-            <div class="sure">
-                <van-button :disabled="btnDisabled" type="primary" class="btn" block @click="handleSubmit">{{
-                    $t("确定")
-                }}</van-button>
-            </div>
-        </van-popup>
         <Footer />
-        <div class="loading_box" v-if="isLoading">
-            <van-loading text-color="#0094ff" />
-        </div>
+
     </div>
 </template>
 <script>
@@ -430,11 +145,16 @@ import {
 import { apiGetRecommendNew } from '@/API/home'
 import { isLogin, priceFormat, getStorage, formatZoneDate, priceFormatInt } from "@/utils/utis";
 import Footer from '@/components/Footer'
+import VueMarkdown from 'vue-markdown'
+
 export default {
     data() {
         return {
             formatZoneDate,
             priceFormatInt,
+            markdownContent: '',
+
+           
             itemName: process.env.VUE_APP_ITEM_NAME,
             mainColor: process.env.VUE_APP_MAIN_COLOR,
             sort_index: '',
@@ -447,7 +167,7 @@ export default {
             isShowTopBtn: false,
             EvaluationInfo: [],
             SellerInfo: {},
-            sellerGoodsId: "",
+            sellerGoodsId: '',
             cartNum: 0, //购物车数量
             bugNum: 1, //购买数量
             evaluationNum: 0,
@@ -462,6 +182,7 @@ export default {
             allSkus: [],
             currentSkuTitle: [],
             currentSkuId: "-1",
+            user:{},
             //
             attrsIdSkuId: [],
             defaultSku: [],
@@ -483,12 +204,11 @@ export default {
         };
     },
     computed: {
-        langIsAr() {
-            return localStorage.getItem('lang') == 'ar'
-        }
+   
     },
     components: {
         Footer,
+        VueMarkdown, // 注册 vue-markdown 组件
         [ImagePreview.name]: ImagePreview,
         [Empty.name]: Empty,
         [Loading.name]: Loading,
@@ -508,6 +228,17 @@ export default {
         setTimeout(() => {
             window.scrollTo(0, 0);
         }, 50)
+
+        this.loadMarkdownContent();
+
+        if (this.$route.query.userData) {
+           this.user = JSON.parse(this.$route.query.userData);
+           this.imageList = this.user.imgList
+           console.log( this.user)
+        }
+    
+
+        
 
         let lang = this.$route.query?.lang
         if (lang) {
@@ -532,79 +263,32 @@ export default {
                 location.reload()
             }
         }
-        this.sellerGoodsId = this.$route.query.sellerGoodsId;
-        if (this.sellerGoodsId) {
-            this.getSellerGoodsInfo();
-            this.getEvaluationList();
-        }
-        //购物车数量
-        if (this.$ls.get("productList")) {
-            let list = this.$ls.get("productList");
-            this.cartNum = list.reduce(function (prev, cur) {
-                return (prev += cur.count);
-            }, 0);
-        }
-        //监听购物车商品
-        this.$ls.on("productList", (list) => {
-            if (list.length > 0) {
-                this.cartNum = list.reduce(function (prev, cur) {
-                    return (prev += cur.count);
-                }, 0);
-            }
-        });
-        // 获取中评差评数量
-        apiEvaluationCountType({ goodId: this.$route.query.sellerGoodsId }).then(res => {
-            const { havePicture, mediumReview, negativeComment, positiveComments } = res
-            this.havePicture = havePicture
-            this.mediumReview = mediumReview
-            this.negativeComment = negativeComment
-            this.positiveComments = positiveComments
-        })
-        this.Token = localStorage.getItem("item");
+        this.sellerGoodsId = this.$route.query.sellerGoodsId.id;
+        console.log(JSON.stringify(this.$route.query.sellerGoodsId));
+   
+   
     },
     mounted() {
         window.addEventListener("scroll", this.handleScroll);
+       
     },
     methods: {
-        // 获取推荐商品 type： 1、猜你喜欢  2、推荐
-        async requestRecommendedProduct() {
-            const params = { sellerId: this.SellerInfo?.id, pageNum: 1, }
-            this.likeGoods = await apiRecommendAndLike({ ...params, pageSize: 4, type: 1 })
-            this.recommendedGoods = await apiRecommendAndLike({ ...params, pageSize: 8, type: 2, })
+
+        loadMarkdownContent() {
+            fetch('/1.md')
+                .then(response => response.text())
+                .then(text => {
+                    this.markdownContent = text;
+                })
+                .catch(error => {
+                console.error('Error fetching markdown content:', error);
+                });
         },
 
-      getShopImage() {
 
-        switch (this.SellerInfo?.mallLevel) {
-          case "A":
-            return require('@/assets/level/a.png')
 
-            break;
-          case "B":
-            return require('@/assets/level/b.png')
-            break;
-          case "C":
-            return require('@/assets/level/c.png')
-            break
-          case "S":
-            return require('@/assets/level/s.png')
-            break;
-          case "O":
-            return require('@/assets/level/s.png')
-            break;
-          case "SS":
-            return require('@/assets/level/s.png')
-            break;
-          case "SSS":
-            return require('@/assets/level/s.png')
-            break;
-          default:
-            return require('@/assets/level/a.png')
-            break;
 
-        }
 
-      },
         handleTabsChange(index) {
             this.tab_index = index
             this.toTop(index)
@@ -630,15 +314,7 @@ export default {
                 })
             }
 
-            this.allSkus.flatMap(item => item.attrs)
-                .filter(attr => attr.hidden && attr.attrValueId !== info.attrValueId)
-                .forEach(attr => disAttr.add(attr.attrValueId));
 
-            allGood.forEach(item => {
-                item.attrValues.forEach(attr => {
-                    attr.disabled = disAttr.has(attr.attrValueId);
-                });
-            });
             this.$set(this.activeAttrs, index, info.attrValueId);
             this.getSkusAndPrice()
             disAttr.clear()
@@ -646,38 +322,38 @@ export default {
             !bool && this.handleToggle(info, index, dis, true)
         },
         getSkusAndPrice(find, arr) {
-            let skuMap = {}
-            this.allSkus.forEach((item) => {
-                const attrIds = item.attrs.map(attr => attr.attrValueId).join(',')
-                if (skuMap[attrIds]) return
-                skuMap[attrIds] = {
-                    title: item.attrs.map(attr => attr.attrName && attr.attrValueName ? `${attr.attrName}: ${attr.attrValueName}` : ''),
-                    coverImg: item.coverImg,
-                    discountPrice: item.discountPrice,
-                    sellingPrice: item.sellingPrice,
-                    skuId: item.skuId,
-                    img: item?.img || this.defaultImageList,
-                    hidden: item.hidden,
-                    price: item.price,
-                }
-            })
-            const attrIds = find ? arr.join(',') : this.activeAttrs.join(',')
-            if (skuMap[attrIds] && !find) {
-                this.currentSkuTitle = skuMap[attrIds].title
-                this.goods_info.discountPrice = skuMap[attrIds].discountPrice || skuMap[attrIds].sellingPrice
-                this.currentSkuId = skuMap[attrIds].skuId
-                this.currentCoverImg = skuMap[attrIds].coverImg
-                this.imageList = skuMap[attrIds].img
-                this.btnDisabled = false
-                this.originalPrice = skuMap[attrIds].discountPrice ? skuMap[attrIds].price : 0
-            } else {
-                if (Object.keys(skuMap).length === 0) {
-                    this.btnDisabled = false
-                } else {
-                    this.btnDisabled = true
-                }
-                return skuMap[attrIds]
-            }
+            // let skuMap = {}
+            // this.allSkus.forEach((item) => {
+            //     const attrIds = item.attrs.map(attr => attr.attrValueId).join(',')
+            //     if (skuMap[attrIds]) return
+            //     skuMap[attrIds] = {
+            //         title: item.attrs.map(attr => attr.attrName && attr.attrValueName ? `${attr.attrName}: ${attr.attrValueName}` : ''),
+            //         coverImg: item.coverImg,
+            //         discountPrice: item.discountPrice,
+            //         sellingPrice: item.sellingPrice,
+            //         skuId: item.skuId,
+            //         img: item?.img || this.defaultImageList,
+            //         hidden: item.hidden,
+            //         price: item.price,
+            //     }
+            // })
+            // const attrIds = find ? arr.join(',') : this.activeAttrs.join(',')
+            // if (skuMap[attrIds] && !find) {
+            //     this.currentSkuTitle = skuMap[attrIds].title
+            //     this.goods_info.discountPrice = skuMap[attrIds].discountPrice || skuMap[attrIds].sellingPrice
+            //     this.currentSkuId = skuMap[attrIds].skuId
+            //     this.currentCoverImg = skuMap[attrIds].coverImg
+            //     this.imageList = skuMap[attrIds].img
+            //     this.btnDisabled = false
+            //     this.originalPrice = skuMap[attrIds].discountPrice ? skuMap[attrIds].price : 0
+            // } else {
+            //     if (Object.keys(skuMap).length === 0) {
+            //         this.btnDisabled = false
+            //     } else {
+            //         this.btnDisabled = true
+            //     }
+            //     return skuMap[attrIds]
+            // }
         },
         handleSubmit() {
             this.getSkusAndPrice()
@@ -708,91 +384,7 @@ export default {
         priceFormat(num) {
             return priceFormat(num);
         },
-        //添加购物车
-        addCart() {
-            if (isLogin()) {
-                if (this.goods_info?.isShelf == 0) {
-                    this.$notifyWarn(this.$t("该商品已下架"));
-                    return
-                }
-                this.productPropertiesShow = this.cardShow = false;
-                let productList = [];
-                if (JSON.stringify(this.goods_info) == "{}") {
-                    console.log("商品数据有误,无法添加");
-                    return;
-                }
-                //添加选择数量
-                this.goods_info.count = this.bugNum;
-                this.goods_info.skuId = this.currentSkuId;
-                this.goods_info.coverImg = this.currentCoverImg;
-                this.goods_info.tempId = new Date().getTime();
 
-                if (this.$ls.get("productList")) {
-                    productList = this.$ls.get("productList") || [];
-                    //验证是否已添加过
-                    let ishave = true;
-                    try {
-                        productList.forEach((item) => {
-                            if (item.id == this.goods_info.id && item.skuId == this.goods_info.skuId) {
-                                item.count += this.bugNum;
-                                this.cartNum += this.bugNum;
-                                // Toast(this.$t("购物车添加成功"));
-                                this.$notify(this.$t('购物车添加成功'), 'success')
-                                // Toast(this.$t('购物车已存在此商品'))
-                                ishave = false;
-                                throw "跳出添加";
-                            }
-                        });
-                    } catch (e) {
-                        //购物数量添加,重置购物车
-                        this.$ls.set("productList", productList);
-                        this.$ls.remove("cartList");
-                    }
-                    //添加
-                    if (ishave) {
-                        if (this.goods_info.storeName == "") {
-                            // return Toast(this.$t("购物车添加失败, 请返回重试"));
-                            return this.$notify(this.$t('购物车添加失败, 请返回重试'))
-                        }
-                        productList.push(this.goods_info);
-                        this.$ls.set("productList", productList);
-                        this.cartNum = productList.reduce(function (prev, cur) {
-                            return (prev += cur.count);
-                        }, 0);
-                        // Toast(this.$t("购物车添加成功"));
-                        this.$notify(this.$t('购物车添加成功'), 'success')
-                        this.$ls.remove("cartList");
-                    }
-                } else {
-                    if (this.goods_info.storeName == "") {
-                        return this.$notify(this.$t('购物车添加失败, 请返回重试'))
-                    }
-                    productList.push(this.goods_info);
-                    this.$ls.set("productList", productList);
-                    this.cartNum = productList.reduce(function (prev, cur) {
-                        return (prev += cur.count);
-                    }, 0);
-                    // Toast(this.$t("购物车添加成功"));
-                    this.$notify(this.$t('购物车添加成功'), 'success')
-                    this.$ls.remove("cartList");
-                }
-                // console.log(this.$ls.get('productList'))
-                // this.$ls.clear()
-            } else {
-                this.productPropertiesShow = this.cardShow = false;
-                //   Toast(this.$t("请先登录"));
-                // Dialog.confirm({
-                //     title: this.$t("您还未登录"),
-                //     message: this.$t("是否跳转到登录页面"),
-                //     confirmButtonText: this.$t("确认"),
-                //     cancelButtonText: this.$t("取消"),
-                // }).then(() => {
-                //     this.$router.push("/login");
-                // });
-                this.$notifyWarn(this.$t("请先登录"));
-                this.$router.push("/login");
-            }
-        },
         //获取商品详情
         getSellerGoodsInfo(sellerGoodsId) {
             this.collectTitle = this.$t('收藏')
@@ -809,113 +401,13 @@ export default {
                 sellerGoodsId: sellerGoodsId || this.sellerGoodsId,
                 skuId: this.$route.query?.skuId || null,
             };
-            getSellerGoods(dataJson).then((data) => {
-                this.$nextTick(() => {
-                    this.goods_info = data;
-                    this.getSkusAndPrice()
-                })
-                if (data.canSelectAttributes?.goodAttrs?.length) {
-                    data.canSelectAttributes.goodAttrs.forEach((item) => {
-                        this.activeAttrs.push(item.attrValues[0].attrValueId);
-                        // if (item.attrValues[0].icon) {
-                        //     this.imageList = item.attrValues.map(sub => sub.iconImg)
-                        // }
-                    });
-                    this.allSkus = data.canSelectAttributes.skus;
-                    const ids = data.canSelectAttributes.goodAttrs.map(item => item.attrId)
-                    this.allSkus.forEach((item) => {
-                        item.attrs = item.attrs.sort((star, next) => ids.indexOf(star.attrId) - ids.indexOf(next.attrId))
-                    })
-                }
-                for (let i = 0; i < 10; i++) {
-                    if (data[`imgUrl${i + 1}`]) {
-                        this.defaultImageList.push(data[`imgUrl${i + 1}`]);
-                    }
-                }
-                if (!this.imageList.length) {
-                    this.imageList = this.defaultImageList
-                }
-                this.getSellerInfo(data.seller.id);
-                if (this.goods_info.isKeep == 1) {
-                    this.collectTitle = this.$t("已收藏");
-                } else {
-                    this.collectTitle = this.$t("收藏");
-                }
-                if (!data.canSelectAttributes?.goodAttrs) {
-                    if (data.discountPrice) {
-                        this.originalPrice = data.sellingPrice
-                    }
-                }
-                this.$toast.clear()
-            });
+  
         },
         //获取评论
-        getEvaluationList() {
-            let dataJson = {
-                sellerGoodsId: this.sellerGoodsId,
-                pageNum: 1,
-                pageSize: 1,
-                evaluationType: this.sort_index
-            };
-            getEvaluationList(dataJson).then((res) => {
-                if (res.pageList.length > 0) {
-                    this.EvaluationInfo = res.pageList.slice(0, 5);
-                    this.EvaluationInfo = this.EvaluationInfo.map(item => {
-                        const images = [item.imgUrl1, item.imgUrl2, item.imgUrl3, item.imgUrl4, item.imgUrl5, item.imgUrl6, item.imgUrl7, item.imgUrl8, item.imgUrl9]
-                        return {
-                            ...item,
-                            avatar: item.avatar || Math.floor(Math.random() * 20),
-                            images: images.filter(url => (!!url))
-                        }
-                    })
-                    this.evaluationNum = res.evaluationNum;
-                } else {
-                    this.EvaluationInfo = []
-                }
-            });
-        },
-        addKeepGoods() {
-            if (!isLogin()) {
-                //   Toast(this.$t("请先登录"));
-                // Dialog.confirm({
-                //     title: this.$t("您还未登录"),
-                //     message: this.$t("是否跳转到登录页面"),
-                //     confirmButtonText: this.$t("确认"),
-                //     cancelButtonText: this.$t("取消"),
-                // }).then(() => {
-                //     this.$router.push("/login");
-                // });
-                this.$notifyWarn(this.$t("请先登录"));
-                this.$router.push("/login");
-                return;
-            }
+  
 
-            if (this.goods_info.isKeep == 1) {
-                let dataJson = {
-                    sellerGoodsId: this.sellerGoodsId,
-                };
-                keepGoodsDel(dataJson).then(() => {
-                    this.collectTitle = this.$t("收藏");
-                    this.goods_info.isKeep = 0;
-                    Toast(this.$t("取消成功"));
-                });
-            } else {
-                let dataJson = {
-                    sellerGoodsId: this.sellerGoodsId,
-                };
-                keepGoods(dataJson).then(() => {
-                    this.collectTitle = this.$t("已收藏");
-                    this.goods_info.isKeep = 1;
-                    Toast(this.$t("收藏成功"));
-                });
-            }
-        },
-        //跳转评论页
         jumpAllReviews() {
-            this.$router.push({
-                path: "/allReviews",
-                query: { sellerGoodsId: this.sellerGoodsId },
-            });
+  
         },
         // 商家详情
         getSellerInfo(id) {
@@ -976,14 +468,6 @@ export default {
         openPay() {
             if (!isLogin()) {
                 this.productPropertiesShow = false;
-                // Dialog.confirm({
-                //     title: this.$t("您还未登录"),
-                //     message: this.$t("是否跳转到登录页面"),
-                //     confirmButtonText: this.$t("确认"),
-                //     cancelButtonText: this.$t("取消"),
-                // }).then(() => {
-                //     this.$router.push("/login");
-                // });
                 this.$notifyWarn(this.$t("请先登录"));
                 this.$router.push("/login");
                 return;
@@ -1017,15 +501,6 @@ export default {
                 sessionStorage.setItem('shopName', this.SellerInfo.name)
                 this.$router.push({ path: `/customerServiceIndex?goodsId=${this.goods_info.id}` });
             } else {
-                //   Toast(this.$t("请先登录"));
-                // Dialog.confirm({
-                //     title: this.$t("您还未登录"),
-                //     message: this.$t("是否跳转到登录页面"),
-                //     confirmButtonText: this.$t("确认"),
-                //     cancelButtonText: this.$t("取消"),
-                // }).then(() => {
-                //     this.$router.push("/login");
-                // });
                 this.$notifyWarn(this.$t("请先登录"));
                 this.$router.push("/login");
             }
@@ -1052,6 +527,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+
 html[dir="rtl"] {
     .CommodityDetails /deep/ .van-tab--active {
         position: relative;
@@ -1068,6 +544,13 @@ html[dir="rtl"] {
             border-radius: 2px;
         }
     }
+}
+
+.markdown-container {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+
 }
 
 .may_like {
@@ -1488,80 +971,11 @@ html[dir="rtl"] {
 
         .product-name {
             font-weight: 500;
-            font-size: 16x;
+            font-size: 13x;
             padding: 15px 0;
             border-bottom: 1px solid #eeeeee;
         }
 
-        .price-box {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 30px;
-            border-bottom: 1px solid #eeeeee;
-            padding: 10px 0;
-            overflow-x: auto;
-            overflow-y: hidden;
-            line-height: 18px;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-
-            &::-webkit-scrollbar {
-                display: none;
-            }
-
-            .product-sold {
-                font-size: 12px;
-                color: #999;
-                white-space: nowrap;
-            }
-
-            .product-sellingPrice {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                color: #999999;
-                line-height: 18px;
-                white-space: nowrap;
-                margin: 0 20px;
-
-                .title {
-                    font-size: 12px;
-                    line-height: 18px;
-                }
-
-                .money {
-                    text-decoration: line-through;
-                    margin-left: 10px;
-                    font-size: 10px;
-                    line-height: 18px;
-                }
-            }
-
-            .product-price {
-                white-space: nowrap;
-
-                .title {
-                    color: #999999;
-                    font-size: 14px;
-                }
-
-                .money {
-                    // color: hsl(37, 100%, 49%);
-                    color: var(--main-color);
-                    font-size: 16px;
-                    font-weight: 500;
-                    margin-left: 10px;
-                }
-
-                .text {
-                    margin-left: 15px;
-                    color: #999999;
-                    font-size: 12px;
-                    text-decoration: line-through;
-                }
-            }
-        }
 
         .product-norm {
             display: flex;

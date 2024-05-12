@@ -96,22 +96,24 @@
                                 <div class="swipe-product-item" style="background: #fff" v-for="item in productList.filter(
                                     (it, n) => (page - 1) * 4 <= n && n < page * 4
                                 )" @click="openProduct(item)" :key="item.id">
-                                    <div class="img-div">
-                                        <img :src="item.imgUrl1" class="img" />
-
-                                        <!-- <img  :src={item.imgUrl1} alt="Dynamic Image" /> -->
-                                        <!-- @/assets/imgStu/1.png' -->
-                                        <!-- <img class="img"  :src="require(`/assets/imgStu/1.png`)" alt="Dynamic Image"> -->
-                                        <!-- <img :src="require(`${item.imgUrl}`)" alt="Dynamic Image"> -->
-                                    </div>
-                                    <div class="content">
-                                        <span class="price">
-                                            ${{ priceFormat(item.discountPrice || item.sellingPrice) }}
-                                        </span>
-                                        <p class="sold">{{ $t('销量') }} {{ priceFormatInt(item?.soldNum) }}</p>
+                                  <!-- <img :src="item.imgUrl1" class="img" /> -->
+                                    <!-- <div class="img-div"> -->
+                                        <img :src="item.imgUrl1" style="width: 100% ;height: auto;border-radius: 3px 3px 0 0;" />
+                                    <!-- </div> -->
+                                    <div class="content" style="padding-left: 20px;">
                                         <p class="describe">
                                             {{ $textOmit(item.name, 24) }}
                                         </p>
+                                        <div style="height: 5px;"></div>
+                                        <p class="sold" style="color: #555555; font-size: 12px;">{{ item?.nameTarge }}</p>
+                                        <div style="height: 5px;"></div>
+
+                                        <p class="sold">{{ '地点:' }} {{ item?.location }}</p>
+                                        <!-- <span class="price">
+                                            ${{ priceFormat(item.discountPrice || item.sellingPrice) }
+                                        </span> -->
+                                        <!-- <p class="sold">{{ $t('销量') }} {{ priceFormatInt(item?.soldNum) }}</p> -->
+                                
                                     </div>
                                     <!-- 活动折扣 -->
                                     <div class="discount_box" v-if="item.discountRatio >= 0.01">
@@ -161,7 +163,7 @@
 
                                 <div :class="['button', ['Laz', 'TikTokMall', 'INT Overstock', 'TikTok-Wholesale', 'AntMall'].includes(itemName) && 'distinguish_btn']"
                                     @click="jumpShop(item)" :style="buttonStyle">
-                                    {{ $t("查看详情") }} &nbsp;>
+                                    {{ "离开" }} &nbsp;>
                                 </div>
                             </div>
 
@@ -194,7 +196,7 @@
                     <div v-for="item in recomendedStoreProductList" @click="openProduct(item)" :key="item.key"
                         class="recommended-store-product-item">
                         <div class="img-div">
-                            <img :src="item.imgUrl1 || $defaultGoodsImage" class="img" />
+                            <img :src="item.imgUrl1" class="img" />
                         </div>
 
                         <div class="content">
@@ -281,97 +283,97 @@ export default {
         [Overlay.name]: Overlay,
         [PasswordInput.name]: PasswordInput,
         [NumberKeyboard.name]: NumberKeyboard,
-        [Badge.name]: Badge,
-        [Icon.name]: Icon,
-    },
-    created() {
-     this.init();
-
-
-
-    
-  
-    },
-
-    data() {
-        return {
-            priceFormat,
-            priceFormatInt,
-            isShelves: !process.env.VUE_APP_PUT_ON_SHELVES,
-            itemName: process.env.VUE_APP_ITEM_NAME,
-            isPutApp: process.env.VUE_APP_PUT_ON_SHELVES,
+        [Badge.name]: Badge, 
+        [Icon.name]: Icon, 
+    }, 
+    created() { 
+     this.init(); 
+ 
+ 
+ 
+     
+   
+    }, 
+ 
+    data() { 
+        return { 
+            priceFormat, 
+            priceFormatInt, 
+            isShelves: !process.env.VUE_APP_PUT_ON_SHELVES, 
+            itemName: process.env.VUE_APP_ITEM_NAME, 
+            isPutApp: process.env.VUE_APP_PUT_ON_SHELVES, 
             itemData: this.$store.state.multiItem[process.env.VUE_APP_ITEM_NAME],
-            isAr: localStorage.getItem("lang") == "ar",
-            isApp: !window?.plus ? true : false,
-            isShowTopBtn: false,
-            msgNum: 0, //未读消息数量
-            current: 0, //product index
-            searchValue: "",
-            gundongtongzhi: "",
-            banner: [],
-            vipData: [],
-            show: false,
-            showNotify: !!localStorage.getItem('sellerId'),
-            searchIcon: require("@/assets/image/index/sousuo.png"),
-            vip_zhifu_data: {},
-            zijin: {},
-            showKeyboard: true,
-            show1: false,
-            dailyNewArrivalList: [], //新品
-            index_homeProject: [],
-            index_homeProject_index: 0,
-            bonus: "",
-            bonus_show: false,
-            recomendedStoreShopList: [],
-            recomendedStoreProductList: [],
-            productList: [], //推荐
-            categoryList: [], //分类
-            prodctPage: 1, //推荐轮播页数
-            queryMessages: 0, // 未读消息
-            time: null,
-            scrollTop: 0,
-            swiperOptions: {
-                slidesPerView: 3.5,
-                autoplay: {
-                    delay: 3500,
-                    disableOnInteraction: false,
-                },
-            },
-            swiperOptions2: {
-                loop: true,
-                // slidesPerView: 3.5,
-                autoplay: {
-                    delay: 3500,
-                    disableOnInteraction: false,
-                },
-            },
-            loading: {
-                banner: true,
-                list: true,
-                product: true,
-                newest: true,
-                shop: true
-            },
-            isCn: localStorage.getItem('lang') === 'cn'
-        };
-    },
-    mounted() {
-        // this.scrollTop = sessionStorage.getItem("scrollTopCount") || 0;
-        // this.$nextTick(() => {
-        //     console.log(`scrollTopCount ::->`, +this.scrollTop);
-        //     window.scrollTo(0, +this.scrollTop);
-        // })
-        setTimeout(() => {
-            window.addEventListener("scroll", this.handleScroll);
-        }, 1000);
-    },
-    computed: {
-        logo() {
-            return require(`@/assets/Argos/logo.png`)
-        },
-
-        buttonStyle() {
-            if (this.itemName === 'TikTokMall') {
+            isAr: localStorage.getItem("lang") == "ar", 
+            isApp: !window?.plus ? true : false, 
+            isShowTopBtn: false, 
+            msgNum: 0, //未读消息数量 
+            current: 0, //product index 
+            searchValue: "", 
+            gundongtongzhi: "", 
+            banner: [], 
+            vipData: [], 
+            show: false, 
+            showNotify: !!localStorage.getItem('sellerId'), 
+            searchIcon: require("@/assets/image/index/sousuo.png"), 
+            vip_zhifu_data: {}, 
+            zijin: {}, 
+            showKeyboard: true, 
+            show1: false, 
+            dailyNewArrivalList: [], //新品 
+            index_homeProject: [], 
+            index_homeProject_index: 0, 
+            bonus: "", 
+            bonus_show: false, 
+            recomendedStoreShopList: [], 
+            recomendedStoreProductList: [], 
+            productList: [], //推荐 
+            categoryList: [], //分类 
+            prodctPage: 1, //推荐轮播页数 
+            queryMessages: 0, // 未读消息 
+            time: null, 
+            scrollTop: 0, 
+            swiperOptions: { 
+                slidesPerView: 3.5, 
+                autoplay: { 
+                    delay: 3500, 
+                    disableOnInteraction: false, 
+                }, 
+            }, 
+            swiperOptions2: { 
+                loop: true, 
+                // slidesPerView: 3.5, 
+                autoplay: { 
+                    delay: 3500, 
+                    disableOnInteraction: false, 
+                }, 
+            }, 
+            loading: { 
+                banner: true, 
+                list: true, 
+                product: true, 
+                newest: true, 
+                shop: true 
+            }, 
+            isCn: localStorage.getItem('lang') === 'cn' 
+        }; 
+    }, 
+    mounted() { 
+        // this.scrollTop = sessionStorage.getItem("scrollTopCount") || 0 ;
+        // this.$nextTick(() => { 
+        //     console.log(`scrollTopCount ::->`, +this.scrollTop); 
+        //     window.scrollTo(0, +this.scrollTop); 
+        // }) 
+        setTimeout(() => { 
+            window.addEventListener("scroll", this.handleScroll); 
+        }, 1000); 
+    }, 
+    computed: { 
+        logo() { 
+            return require(`@/assets/Argos/logo.png`) 
+        }, 
+ 
+        buttonStyle() { 
+            if (this.itemName === 'TikTokMall') { 
                 return {
                     background: '#000000',
                     color: '#fff'
@@ -723,7 +725,13 @@ export default {
         },
         //跳转商品详情
         openProduct(item) {
-            this.$router.push("/CommodityDetails?sellerGoodsId=" + item.id);
+            // this.$router.push("/CommodityDetails?sellerGoodsId=" + item.id);
+            this.$router.push({
+                path: '/CommodityDetails?sellerGoodsId='+ item.id,
+                query: {
+                    userData: JSON.stringify(item)  // 将对象转换为 JSON 字符串
+                }
+                });
         },
         //跳转分类商品
         openClass(item) {
@@ -895,7 +903,7 @@ export default {
             justify-content: space-between;
 
             .recommended-store-product-item {
-                width: calc(50% - 15px);
+                width: calc(50% );
                 border: 1px solid rgba(238, 238, 238, 1);
                 margin-bottom: 10px;
                 display: flex;
@@ -907,14 +915,15 @@ export default {
                 position: relative;
 
                 .img-div {
-                    height: 156px;
+                    height: 160px;
+                    width: 100%;
                     display: flex;
                     align-items: center;
                     justify-content: center;
 
                     .img {
-                        width: auto;
-                        height: auto;
+                        // width: auto;
+                        // height: auto;
                         max-width: 100%;
                         max-height: 100%;
                         transform: translateY(1px);
@@ -978,36 +987,36 @@ export default {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
-            padding: 0 1px;
+          
             .swipe-product-item {
-                width: calc(100% - 15px);
-                height: 245px;
-                border: 1px solid rgba(238, 238, 238, 1);
-                margin-bottom: 10px;
+                width: calc(100% );
+                height: 250px;
+                // border: 0.5px solid rgba(238, 238, 238, 1);
+                margin-bottom: 30px;
                 display: flex;
                 flex-direction: column;
                 justify-content: space-around;
                 align-items: center;
-                padding: 6px 4px;
-                border-radius: 4px;
+                // padding: 6px 4px;
+                border-radius: 3px;
                 position: relative;
 
-                .img-div {
-                    height: 156px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
+                // .img-div {
+                //     height: 156px;
+                //     display: flex;
+                //     align-items: center;
+                //     justify-content: center;
 
-                    .img {
-                        width: auto;
-                        height: auto;
-                        max-width: 100%;
-                        max-height: 100%;
-                    }
-                }
+                //     .img {
+                //         width:  100%;
+                //         height: auto;
+                //         max-width: 100%;
+                //         max-height: 100%;
+                //     }
+                // }
 
                 .content {
-                    width: 90%;
+                    width: 100%;
                     // padding-left: 10%;
                     padding: 0 6px;
 
@@ -1124,7 +1133,7 @@ export default {
 
     .logo-img {
         width: auto;
-        height: 50px;
+        height: 80px;
     }
 
     .top_logo_img {
@@ -1450,8 +1459,8 @@ export default {
                 .img {
                     width: auto;
                     height: auto;
-                    max-width: 90%;
-                    max-height: 90%;
+                    max-width: 100%;
+                    max-height:100%;
                 }
             }
         }

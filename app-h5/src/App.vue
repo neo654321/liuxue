@@ -52,7 +52,7 @@ export default {
         // 刷新事件
         window.addEventListener("beforeunload", () => {
             sessionStorage.removeItem("scrollTopCount")
-            // sessionStorage.removeItem("showLoading")
+         
         })
         if (localStorage.getItem('lang') == 'en-US') localStorage.setItem('lang', 'en')
         setInterval(() => {
